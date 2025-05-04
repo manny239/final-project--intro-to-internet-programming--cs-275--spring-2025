@@ -5,6 +5,9 @@ const { src, dest, series, watch } = require(`gulp`),
     jsCompressor = require(`gulp-uglify`),
     jsLinter = require(`gulp-eslint`),
     browserSync = require(`browser-sync`),
+    htmlValidator = require(`gulp-html`),
+    htmlCompressor = require(`gulp-htmlmin`),
+    cssCompressor = require(`gulp-clean-css`),
     reload = browserSync.reload;
 
 let browserChoice = `default`;
@@ -28,6 +31,21 @@ async function allBrowsers () {
     ];
 }
 
+let validateHTML = () => {
+    return src(`app/html/**/*.html`)
+        .pipe(htmlValidator(undefined));
+};
+
+let lintCSS = () => {
+    return src(`app/css/**/*.css`)
+        .pipe(CSSLinter({
+            failAfterError: false,
+            reporters: [
+                {formatter: `string`, console: true}
+            ]
+        }));
+};
+
 let lintJS = () => {
     return src(`app/js/*.js`)
         .pipe(jsLinter())
@@ -38,6 +56,18 @@ let transpileJSForDev = () => {
     return src(`app/js/*.js`)
         .pipe(babel())
         .pipe(dest(`temp/js`));
+};
+
+let compressHTML = () => {
+    return src(`app/html/**/*.html`)
+        .pipe(htmlCompressor({ collapseWhitespace: true }))
+        .pipe(dest(`prod/html`));
+};
+
+let compressCSS = () => {
+    return src(`app/css/**/*.css`)
+        .pipe(cssCompressor())
+        .pipe(dest(`prod/css`));
 };
 
 let compileCSSForProd = () => {
@@ -81,14 +111,10 @@ let serve = () => {
         }
     });
 
-    watch(`app/js/*.js`, series(lintJS, transpileJSForDev))
-        .on(`change`, reload);
-
-    watch(`app/css/**/*.css`)
-        .on(`change`, reload);
-
-    watch(`app/img/**/*`)
-        .on(`change`, reload);
+    watch(`app/html/**/*.html`, validateHTML).on(`change`, reload);
+    watch(`app/css/**/*.css`, lintCSS).on(`change`, reload);
+    watch(`app/js/*.js`, series(lintJS, transpileJSForDev)).on(`change`, reload);
+    watch(`app/img/**/*`).on(`change`, reload);
 };
 
 async function clean() {
@@ -100,23 +126,11 @@ async function listTasks () {
     let exec = require(`child_process`).exec;
     exec(`gulp --tasks`, function (error, stdout) {
         if (null !== error) {
-            console.log(`An error was generated when invoking the “exec”` +
-                `program in the default task.`);
+            console.log(`An error was generated when invoking the “exec” program in the default task.`);
         }
-        console.log(`\n\tThis default task does nothing but generate this ` +
-            `message. The available tasks are:\n\n${stdout}`);
+        console.log(`\n\tThis default task does nothing but generate this message. The available tasks are:\n\n${stdout}`);
     });
 }
-
-let lintCSS = () => {
-    return src(`app/css/**/*.css`)
-        .pipe(CSSLinter({
-            failAfterError: false,
-            reporters: [
-                {formatter: `string`, console: true}
-            ]
-        }));
-};
 
 exports.brave = series(brave, serve);
 exports.chrome = series(chrome, serve);
@@ -125,20 +139,31 @@ exports.firefox = series(firefox, serve);
 exports.opera = series(opera, serve);
 exports.safari = series(safari, serve);
 exports.vivaldi = series(vivaldi, serve);
+exports.allBrowsers = series(allBrowsers, serve);
+
+exports.validateHTML = validateHTML;
+exports.lintCSS = lintCSS;
 exports.lintJS = lintJS;
 exports.transpileJSForDev = transpileJSForDev;
+exports.compressHTML = compressHTML;
+exports.compressCSS = compressCSS;
 exports.compileCSSForProd = compileCSSForProd;
 exports.transpileJSForProd = transpileJSForProd;
 exports.copyUnprocessedAssetsForProd = copyUnprocessedAssetsForProd;
 exports.clean = clean;
 exports.default = listTasks;
-exports.lintCSS = lintCSS;
+
 exports.serve = series(
+    validateHTML,
+    lintCSS,
     lintJS,
     transpileJSForDev,
     serve
 );
+
 exports.build = series(
+    compressHTML,
+    compressCSS,
     compileCSSForProd,
     transpileJSForProd,
     copyUnprocessedAssetsForProd

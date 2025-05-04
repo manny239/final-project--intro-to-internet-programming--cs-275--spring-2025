@@ -1,22 +1,17 @@
 {
   "name": "final-project--intro-to-internet-programming--cs-275--spring-2025",
   "version": "1.0.0",
-  "description": "☞ **Plagiarism in any form will result in failing the entire course. You’ve been duly warned.** ☜",
+  "description": "Final project for CS-275: Sliding Diamond.",
   "main": "gulpfile.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "gulp",
+    "build": "gulp build"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/code-warrior/final-project--intro-to-internet-programming--cs-275--spring-2025.git"
+    "url": "https://github.com/code-warrior/final-project--intro-to-internet-programming--cs-275--spring-2025.git"
   },
-  "keywords": [],
-  "author": "",
   "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/code-warrior/final-project--intro-to-internet-programming--cs-275--spring-2025/issues"
-  },
-  "homepage": "https://github.com/code-warrior/final-project--intro-to-internet-programming--cs-275--spring-2025#readme",
   "devDependencies": {
     "@babel/core": "^7.27.1",
     "@babel/preset-env": "^7.27.1",
@@ -24,7 +19,10 @@
     "del": "^8.0.0",
     "gulp": "^5.0.0",
     "gulp-babel": "^8.0.0",
+    "gulp-clean-css": "^4.3.0",
     "gulp-eslint": "^6.0.0",
+    "gulp-html": "^5.0.1",
+    "gulp-htmlmin": "^5.0.1",
     "gulp-stylelint": "^13.0.0",
     "gulp-uglify": "^3.0.2"
   }
