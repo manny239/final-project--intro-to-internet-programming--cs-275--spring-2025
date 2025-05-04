@@ -1,0 +1,19 @@
+body {
+  margin: 0;
+  overflow: hidden;
+  background-color: #1a1a1a;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+}
+
+#diamond-container {
+  color: #fff;
+  font-family: monospace;
+  font-size: 20px;
+  white-space: pre;
+  position: absolute;
+  left: -100%;
+  text-shadow: 0 0 10px rgba(212, 47, 149, 5);
+}
