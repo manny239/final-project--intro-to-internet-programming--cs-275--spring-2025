@@ -1,6 +1,6 @@
 const { src, dest, series, parallel, watch } = require(`gulp`),
     CSSLinter     = require(`gulp-stylelint`),
-    htmlValidator = require(`gulp-html-validator`),
+    htmlValidator = require(`gulp-html`),
     eslint        = require(`gulp-eslint`),
     babel         = require(`gulp-babel`),
     htmlMin       = require(`gulp-htmlmin`),
