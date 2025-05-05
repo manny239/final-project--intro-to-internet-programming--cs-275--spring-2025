@@ -1,19 +1,64 @@
+/* making the whole page use monospace and also hide scrollbars */
 body {
+  font-family: monospace;
   margin: 0;
   overflow: hidden;
-  background-color: #1a1a1a;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 100vh;
+  background: #f8f8f8;
 }
 
+/* box to hold and slide the diamond row */
 #diamond-container {
-  color: #fff;
-  font-family: monospace;
-  font-size: 20px;
-  white-space: pre;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   position: absolute;
-  left: -100%;
-  text-shadow: 0 0 10px rgba(212, 47, 149, 5);
+  top: 0;
+  left: 0;
+  padding: 20px;          /* JS will reset this to 0 */
+  background: #fff;
+  border: 1px solid #333;
+}
+
+/* one horizontal slice of the diamond */
+.row {
+  display: flex;
+  justify-content: center;
+}
+
+/* empty gap between diamonds */
+.space {
+  display: inline-block;
+  width: 1px;
+  height: 0;
+}
+
+/* the diamond emoji itself */
+.star {
+  display: inline-block;
+  font-size: 1.25rem;
+  color: #333;
+  text-align: center;
+  margin-right: 5px;
+}
+
+/* controls panel in the top-right */
+#controls {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: rgba(104, 198, 37, 0.9);
+  padding: 8px;
+  border: 1px solid #893a41;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: monospace;
+}
+
+/* simple button styling */
+#controls button {
+  padding: 4px 8px;
+  font-family: monospace;
+  cursor: pointer;
 }
